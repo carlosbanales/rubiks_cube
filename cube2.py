@@ -96,8 +96,6 @@ def rotate_face_y(y_level=2, direction=1):
 
     pivot.animate('rotation_y', 90 * direction, duration=0.25)
 
-    
-
     def cleanup():
         for child in pivot.children:
             child.world_parent = cube_parent
@@ -116,8 +114,6 @@ def input(key):
 # Add camera
 EditorCamera()
 
-
-
 # Optional: Rotate with arrow keys
 def update():
     if held_keys['left arrow']:
@@ -128,9 +124,6 @@ def update():
         cube_parent.rotation_x += 100 * time.dt
     if held_keys['down arrow']:
         cube_parent.rotation_x -= 100 * time.dt
-
-
-
 
 app.run()
 
