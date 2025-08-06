@@ -1,0 +1,7 @@
+# Ignore direnv environment files
+.direnv/
+.envrc
+
+# Ignore Python virtual environment
+.venv/
+
