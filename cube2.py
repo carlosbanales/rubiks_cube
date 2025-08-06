@@ -1,3 +1,14 @@
+#To-do
+
+# - fix bugs on the first layer so i can rotate the cube and still be able to 
+#   rotate the individual sections
+
+# - add a key press binding that rotates the cube continuosly as if im pressing
+#   and holding the up and right arrow key
+
+# - add the rest of the cube rotations after the bugs on the first layer are worked out 
+
+
 from ursina import *
 
 app = Ursina()
@@ -85,13 +96,13 @@ for x in range(3):
                        scale=(STICKER_THICKNESS, STICKER_SCALE, STICKER_SCALE),
                        unlit=True)
 
-def rotate_face_y(y_level=2, direction=1):
+def rotate_face_y(y_level=1, direction=1):
     pivot = Entity()
-
-    pivot.position = Vec3(0, (y_level - 1) * OFFSET, 0)  # Center of top layer
+    pivot.parent = cube_parent  # <-- crucial!
+    pivot.position = Vec3(0, (y_level - 1) * OFFSET, 0)  # Pivot is now in local cube space
 
     for cubie in cubies:
-        if round(cubie.y, 2) == (y_level - 1) * OFFSET:
+        if abs(cubie.world_position.y - ((y_level - 1) * OFFSET)) < 0.1:
             cubie.world_parent = pivot
 
     pivot.animate('rotation_y', 90 * direction, duration=0.25)
@@ -99,11 +110,10 @@ def rotate_face_y(y_level=2, direction=1):
     def cleanup():
         for child in pivot.children:
             child.world_parent = cube_parent
-            child.position = round(child.world_position, 2)
-            child.rotation = child.world_rotation
         destroy(pivot)
 
     invoke(cleanup, delay=0.3)
+
 
 def input(key):
     if key == 't':
